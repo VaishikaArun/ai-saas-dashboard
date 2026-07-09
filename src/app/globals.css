@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-ink text-text-primary font-body;
+    background-image: linear-gradient(to right, #1A1C21 1px, transparent 1px),
+      linear-gradient(to bottom, #1A1C21 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-attachment: fixed;
+  }
+  ::selection {
+    @apply bg-signal/30 text-text-primary;
+  }
+  *:focus-visible {
+    outline: 2px solid #e08d3c;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-panel border border-line rounded-panel;
+  }
+  .panel-raised {
+    @apply bg-panel-raised border border-line rounded-panel;
+  }
+  .btn-primary {
+    @apply bg-signal text-ink font-medium rounded-panel px-4 py-2 text-sm transition hover:bg-signal/90 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply bg-panel-raised border border-line text-text-primary font-medium rounded-panel px-4 py-2 text-sm transition hover:border-signal/50 disabled:opacity-40;
+  }
+  .input-field {
+    @apply w-full bg-ink border border-line rounded-panel px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-signal/60 focus:outline-none;
+  }
+  .label-eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-widest text-text-muted;
+  }
+
+  /* Live status dot — used anywhere something should read as "actively running" */
+  .live-dot {
+    @apply relative inline-flex h-1.5 w-1.5;
+  }
+  .live-dot::before {
+    content: "";
+    @apply absolute inline-flex h-full w-full rounded-full bg-signal animate-blink;
+  }
+  .live-dot::after {
+    content: "";
+    @apply relative inline-flex rounded-full h-1.5 w-1.5 bg-signal;
+  }
+  .live-dot.is-data::before,
+  .live-dot.is-data::after {
+    @apply bg-data;
+  }
+
+  /* Scanning sweep overlay — a thin light band that passes over a panel once wired up */
+  .scan-overlay {
+    @apply pointer-events-none absolute inset-0 overflow-hidden rounded-panel;
+  }
+  .scan-overlay::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(224, 141, 60, 0.06),
+      transparent
+    );
+  }
+  .scan-overlay.is-active::before {
+    @apply animate-scan;
+  }
+
+  /* Tool chip — landing page pills, dashboard nav badges */
+  .tool-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-xs text-text-muted transition;
+  }
+  .tool-chip.is-active {
+    @apply text-text-primary border-current;
+  }
+
+  /* Staggered fade-up entrance — apply with an inline animation-delay per child */
+  .stagger-in {
+    @apply opacity-0 animate-fade-up;
+  }
+
+  /* Panel with a lit top edge — use on any panel that's currently the focal surface */
+  .panel-accent {
+    @apply panel relative;
+    border-top: 2px solid #e08d3c;
+    box-shadow: 0 -1px 24px -8px rgba(224, 141, 60, 0.25);
+  }
+  .panel-accent.is-data {
+    border-top-color: #6fa8b5;
+    box-shadow: 0 -1px 24px -8px rgba(79, 209, 197, 0.25);
+  }
+
+  /* Empty state — replaces a lone muted sentence with something that has weight */
+  .empty-state {
+    @apply flex flex-col items-center justify-center text-center py-16 px-6;
+  }
+  .empty-state-icon {
+    @apply w-11 h-11 rounded-full flex items-center justify-center mb-4;
+    background: rgba(224, 141, 60, 0.1);
+    color: #e08d3c;
+  }
+  .empty-state-icon.is-data {
+    background: rgba(79, 209, 197, 0.1);
+    color: #6fa8b5;
+  }
+
+  /* Icon badge — larger colored circle used in page headers and tool cards */
+  .icon-badge {
+    @apply w-11 h-11 rounded-panel flex items-center justify-center shrink-0;
+    background: rgba(224, 141, 60, 0.12);
+    color: #e08d3c;
+  }
+  .icon-badge.is-data {
+    background: rgba(79, 209, 197, 0.12);
+    color: #6fa8b5;
+  }
+
+  /* Page header — bold header block used at the top of every dashboard page */
+  .page-header {
+    @apply flex items-center gap-4 mb-8 relative;
+  }
+  .page-header-glow {
+    @apply pointer-events-none absolute -z-10;
+    width: 260px;
+    height: 140px;
+    top: -40px;
+    left: -20px;
+    background: radial-gradient(ellipse at center, rgba(224, 141, 60, 0.14), transparent 70%);
+  }
+  .page-header-glow.is-data {
+    background: radial-gradient(ellipse at center, rgba(79, 209, 197, 0.14), transparent 70%);
+  }
+}
