@@ -1,91 +1,78 @@
-# Console — AI SaaS Dashboard
+# AI SaaS Dashboard
 
-A full-stack AI SaaS starter: authentication, AI chat, AI image generation,
-AI resume builder, AI code reviewer, and a real usage-analytics dashboard —
-built with Next.js 14 (App Router), TypeScript, Tailwind, Prisma, and OpenAI.
+A modern AI-powered dashboard built with Next.js, TypeScript, Prisma, and NextAuth. The app provides a secure workspace where users can sign in, interact with AI tools, save their work, and view activity analytics from one place.
 
-## Design direction
+## What this project includes
 
-The UI leans into an "instrument console" identity rather than a generic
-dark-mode template: a warm charcoal background (not blue-black), an amber
-signal accent, a cool slate-teal data accent, and a live telemetry strip
-(`SignalStrip`) across the top of the dashboard that reads like a systems
-console — model, latency, uptime, session id. Space Grotesk for display type,
-Inter for body copy, JetBrains Mono for data and code.
+- User authentication with email/password and Google OAuth
+- Protected dashboard routes
+- AI chat experience
+- AI image generation flow
+- Resume generation workflow
+- Code review assistance
+- Usage analytics dashboard with charts
+
+## Tech stack
+
+- Frontend: Next.js 14, React, Tailwind CSS
+- Backend: Next.js route handlers
+- Authentication: NextAuth
+- Database: Prisma with MySQL
+- AI integrations: Hugging Face and OpenAI-based services
+
+## Project structure
+
+- [src/app](src/app) contains the app router pages and API routes
+- [src/components](src/components) holds reusable UI components
+- [src/lib](src/lib) contains configuration for auth, Prisma, and AI services
+- [prisma/schema.prisma](prisma/schema.prisma) defines the database models
+
+## How it works
+
+1. A user signs in or registers through the auth pages.
+2. NextAuth manages the session and protects dashboard pages.
+3. The dashboard shell loads the sidebar and activity UI.
+4. Each AI feature sends requests to server-side API routes.
+5. The server validates the session, stores relevant data in Prisma, and calls the AI service.
+6. The response is returned to the client and displayed in the UI.
 
 ## Getting started
 
+Install dependencies:
+
 ```bash
 npm install
+```
+
+Create your environment file and add the required values:
+
+```bash
 cp .env.example .env
 ```
 
-Fill in `.env`:
+Required environment variables:
 
-| Variable | Where to get it |
-|---|---|
-| `DATABASE_URL` | A Postgres connection string — [Neon](https://neon.tech) or [Supabase](https://supabase.com) both have free tiers |
-| `AUTH_SECRET` | Run `npx auth secret` |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → OAuth Client ID → redirect URI `http://localhost:3000/api/auth/callback/google` |
-| `OPENAI_API_KEY` | [platform.openai.com](https://platform.openai.com/api-keys) |
+- `DATABASE_URL`
+- `AUTH_SECRET`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `OPENAI_API_KEY`
+- `HF_TOKEN`
 
-Push the schema to your database:
+Push the Prisma schema:
 
 ```bash
 npm run db:push
 ```
 
-Run the dev server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` — it redirects to `/login`.
+Then open http://localhost:3000.
 
-## Project structure
+## Notes
 
-```
-src/
-  app/
-    (auth)/login, register        → auth pages
-    (dashboard)/                   → protected route group (checked in layout.tsx)
-      dashboard/                   → usage analytics overview
-      chat/                        → AI chat
-      image-generator/             → DALL·E image generation
-      resume-builder/              → AI resume section writer
-      code-reviewer/               → AI code review
-    api/
-      auth/[...nextauth]           → NextAuth handlers
-      auth/register                → credentials signup
-      chat, image, resume, code-review, analytics
-  components/
-    dashboard/                     → sidebar, signal strip, analytics chart
-  lib/
-    auth.ts                        → NextAuth config (Credentials + Google)
-    prisma.ts                      → Prisma client singleton
-    openai.ts                      → OpenAI client
-  middleware.ts                    → route protection
-prisma/schema.prisma                → User, Chat, Message, GeneratedImage, Resume, CodeReview
-```
-
-## What this demonstrates (for recruiters / reviewers)
-
-- **Auth**: credential + OAuth flows, password hashing, JWT sessions, protected routes via middleware.
-- **API integration**: server-side OpenAI calls (chat completions + image generation) never exposed to the client.
-- **Database**: normalized Prisma schema, per-user data scoping, aggregation queries for analytics.
-- **AI**: three distinct product surfaces (chat, generation, structured writing/review) built on the same provider.
-- **Dashboard UI**: real usage data (not mocked) rendered with Recharts, plus a distinctive design system instead of a default template.
-
-## Deploying
-
-Push to GitHub, import into [Vercel](https://vercel.com/new), add the same
-environment variables in Project Settings → Environment Variables, and set
-`DATABASE_URL` to your hosted Postgres instance. Vercel runs `prisma generate`
-automatically via the `postinstall` script.
-
-## Extending
-
-- **Payments**: not included yet — add Stripe checkout + a `Subscription` model gating AI usage by plan when you're ready.
-- **Streaming chat**: current chat endpoint returns a full completion; swap to `openai.chat.completions.create({ stream: true })` + a `ReadableStream` response for token-by-token streaming.
-- **Rate limiting**: add per-user request limits (e.g. Upstash Ratelimit) before these AI routes hit production traffic.
+This project is a strong starter template for building AI products with authentication, database persistence, and analytics in a single app.
