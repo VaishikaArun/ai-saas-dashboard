@@ -1,26 +1,24 @@
-import { InferenceClient } from "@huggingface/inference";
-
-const hf = new InferenceClient(process.env.HF_TOKEN);
-
 export async function generateText(
   prompt: string,
   systemPrompt: string
 ) {
-  const result = await hf.chatCompletion({
-    model: "meta-llama/Llama-3.1-8B-Instruct",
-    messages: [
-      {
-        role: "system",
-        content: systemPrompt,
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
-    max_tokens: 1024,
-    temperature: 0.7,
+  const response = await fetch("http://localhost:11434/api/generate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "qwen2.5:3b",
+      prompt: `${systemPrompt}\n\nUser: ${prompt}\nAssistant:`,
+      stream: false,
+    }),
   });
 
-  return result.choices[0].message.content;
+  if (!response.ok) {
+    throw new Error("Failed to connect to Ollama");
+  }
+
+  const data = await response.json();
+
+  return data.response;
 }

@@ -4,7 +4,7 @@ import { Logo } from "@/components/Logo";
 export function Navbar() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-ink/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="flex w-full items-center justify-between px-8 py-4">
         <Link href="/" className="flex items-center gap-2.5">
           <Logo size={22} className="text-text-primary" />
           <span className="font-mono text-sm uppercase tracking-widest text-text-primary">

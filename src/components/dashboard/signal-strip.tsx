@@ -42,7 +42,9 @@ export function SignalStrip() {
           <span className="flex items-center gap-2 shrink-0 font-mono text-[11px]">
             <Cpu size={12} className="text-chat opacity-70" />
             <span className="text-text-muted uppercase text-[9px] tracking-wider">model:</span>
-            <span className="text-chat bg-chat/5 border border-chat/10 px-2 py-0.5 rounded-full text-[10px] font-bold">gpt-4o-mini</span>
+            <span className="text-chat bg-chat/5 border border-chat/10 px-2 py-0.5 rounded-full text-[10px] font-bold">
+  Qwen 2.5 3B
+</span>
           </span>
 
           {/* Latency */}
