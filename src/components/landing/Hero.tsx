@@ -49,7 +49,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative z-10 mx-auto max-w-7xl px-6 pb-16 pt-20 md:pt-28">
+    <section className="relative z-10 mx-auto max-w-6xl px-6 pb-16 pt-20 md:pt-28">
       <div className="grid gap-12 md:grid-cols-2 md:items-center md:gap-8">
         <div>
           <span className="label-eyebrow">one workspace, four tools</span>
