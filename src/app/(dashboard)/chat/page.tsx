@@ -51,7 +51,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-full max-h-[calc(100vh-8rem)]">
+    <div className="flex h-full max-h-[calc(100vh-8rem)] flex-col">
       <PageHeader
         icon={MessageSquare}
         eyebrow="assistant"
@@ -60,19 +60,17 @@ export default function ChatPage() {
         status={loading ? "thinking" : "ready"}
       />
 
-      <div className="flex-1 panel-accent p-5 overflow-y-auto space-y-4 mb-4">
+      <div className="panel-accent mb-4 flex-1 space-y-4 overflow-y-auto p-5">
         {messages.length === 0 && (
           <div className="empty-state">
             <div className="empty-state-icon">
               <MessageSquare size={20} strokeWidth={1.75} />
             </div>
-            <p className="font-display text-base font-medium text-text-primary mb-1.5">
-              Nothing here yet
-            </p>
-            <p className="text-sm text-text-muted font-mono mb-6">
+            <p className="mb-1.5 text-base font-medium text-text-primary">Nothing here yet</p>
+            <p className="mb-6 font-mono text-sm text-text-muted">
               &gt; ask anything. session starts on first message.
             </p>
-            <div className="flex flex-wrap gap-2 justify-center max-w-md">
+            <div className="flex max-w-md flex-wrap justify-center gap-2">
               {STARTERS.map((s) => (
                 <button
                   key={s}
@@ -85,26 +83,27 @@ export default function ChatPage() {
             </div>
           </div>
         )}
+
         {messages.map((m, i) => (
           <div
             key={i}
-            className={`flex stagger-in ${m.role === "user" ? "justify-end" : "justify-start"}`}
-            style={{ animationFillMode: "forwards" }}
+            className={`stagger-in flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
           >
             <div
               className={`max-w-[75%] rounded-panel px-4 py-2.5 text-sm ${
                 m.role === "user"
-                  ? "bg-signal text-ink"
-                  : "bg-panel-raised border border-line text-text-primary"
+                  ? "bg-signal text-text-primary"
+                  : "border border-line bg-panel-raised text-text-primary"
               }`}
             >
               {m.content}
             </div>
           </div>
         ))}
+
         {loading && (
-          <p className="text-xs text-text-muted font-mono flex items-center gap-2">
-            <span className="live-dot" />
+          <p className="flex items-center gap-2 font-mono text-xs text-text-muted">
+            <span className="status-live" />
             assistant is thinking…
           </p>
         )}
@@ -119,7 +118,11 @@ export default function ChatPage() {
           placeholder="Type a message…"
           className="input-field"
         />
-        <button onClick={() => sendMessage()} disabled={loading} className="btn-primary flex items-center gap-2">
+        <button
+          onClick={() => sendMessage()}
+          disabled={loading}
+          className="btn-primary flex items-center gap-2"
+        >
           <Send size={15} />
           Send
         </button>

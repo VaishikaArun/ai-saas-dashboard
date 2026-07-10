@@ -1,4 +1,10 @@
-import type { LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
+
+const ACCENT_COLORS: Record<string, string> = {
+  signal: "#FF2D6C",
+  data: "#2F7FFF",
+  alert: "#FF4D4D",
+};
 
 export function PageHeader({
   icon: Icon,
@@ -10,24 +16,30 @@ export function PageHeader({
   icon: LucideIcon;
   eyebrow: string;
   title: string;
-  accent?: "signal" | "data";
+  accent?: "signal" | "data" | "alert";
   status?: string;
 }) {
-  const isData = accent === "data";
+  const color = ACCENT_COLORS[accent] ?? ACCENT_COLORS.signal;
+
   return (
-    <div className="page-header">
-      <div className={`page-header-glow ${isData ? "is-data" : ""}`} />
-      <div className={`icon-badge ${isData ? "is-data" : ""}`}>
-        <Icon size={20} strokeWidth={1.75} />
+    <div className="mb-6 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <span
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-panel border border-line bg-panel"
+          style={{ color }}
+        >
+          <Icon size={18} strokeWidth={1.75} />
+        </span>
+        <div>
+          <span className="label-eyebrow">{eyebrow}</span>
+          <h1 className="mt-0.5 text-2xl font-semibold text-text-primary">{title}</h1>
+        </div>
       </div>
-      <div className="flex-1">
-        <span className="label-eyebrow">{eyebrow}</span>
-        <h1 className="font-display text-2xl font-medium mt-0.5">{title}</h1>
-      </div>
+
       {status && (
-        <span className="flex items-center gap-1.5">
-          <span className={`live-dot ${isData ? "is-data" : ""}`} />
-          <span className="label-eyebrow">{status}</span>
+        <span className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-text-muted">
+          <span className="status-live" />
+          {status}
         </span>
       )}
     </div>

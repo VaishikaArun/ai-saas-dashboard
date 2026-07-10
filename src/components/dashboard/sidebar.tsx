@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { Logo } from "@/components/Logo";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -27,15 +28,8 @@ export function Sidebar({ userName }: { userName?: string | null }) {
     <aside className="w-60 shrink-0 border-r border-line bg-panel flex flex-col">
       <div className="px-5 py-5 border-b border-line">
         <div className="flex items-center gap-2.5">
-          <span
-            className="w-6 h-6 rounded-full shrink-0"
-            style={{
-              background:
-                "conic-gradient(#E08D3C, #4FD1C5, #E08D3C)",
-              boxShadow: "0 0 12px rgba(224,141,60,0.35)",
-            }}
-          />
-          <span className="font-display font-medium text-text-primary text-[15px]">Console</span>
+          <Logo className="h-8 w-8" />
+          <span className="font-display font-medium text-text-primary text-[15px]">Patchbay</span>
         </div>
       </div>
 

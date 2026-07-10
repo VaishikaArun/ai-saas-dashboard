@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -42,8 +43,8 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm stagger-in" style={{ animationFillMode: "forwards" }}>
         <div className="mb-8 text-center">
           <div className="inline-flex items-center gap-2 mb-6">
-            <span className="live-dot" />
-            <span className="label-eyebrow">console v0.1</span>
+            <Logo size={18} className="text-text-primary" />
+            <span className="label-eyebrow">patchbay v0.1</span>
           </div>
           <h1 className="font-display text-2xl font-medium text-text-primary">Create account</h1>
           <p className="text-sm text-text-muted mt-1">Set up your workspace</p>
@@ -88,7 +89,7 @@ export default function RegisterPage() {
             {error && <p className="text-sm text-alert font-mono">{error}</p>}
 
             <button type="submit" disabled={loading} className="btn-primary w-full flex items-center justify-center gap-2">
-              {loading && <span className="live-dot" />}
+              {loading && <span className="status-live" />}
               {loading ? "Creating…" : "Create account"}
             </button>
           </form>

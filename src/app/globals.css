@@ -5,143 +5,190 @@
 @layer base {
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
+
   body {
     @apply bg-ink text-text-primary font-body;
-    background-image: linear-gradient(to right, #1A1C21 1px, transparent 1px),
-      linear-gradient(to bottom, #1A1C21 1px, transparent 1px);
-    background-size: 28px 28px;
-    background-attachment: fixed;
+    background-image:
+      linear-gradient(to right, #1B1B26 1px, transparent 1px),
+      linear-gradient(to bottom, #1B1B26 1px, transparent 1px);
+    background-size: 32px 32px;
   }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+
   ::selection {
     @apply bg-signal/30 text-text-primary;
   }
+
   *:focus-visible {
-    outline: 2px solid #e08d3c;
+    outline: 2px solid #ff2d6c;
     outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
 @layer components {
-  .panel {
-    @apply bg-panel border border-line rounded-panel;
-  }
-  .panel-raised {
-    @apply bg-panel-raised border border-line rounded-panel;
-  }
-  .btn-primary {
-    @apply bg-signal text-ink font-medium rounded-panel px-4 py-2 text-sm transition hover:bg-signal/90 disabled:opacity-40 disabled:cursor-not-allowed;
-  }
-  .btn-secondary {
-    @apply bg-panel-raised border border-line text-text-primary font-medium rounded-panel px-4 py-2 text-sm transition hover:border-signal/50 disabled:opacity-40;
-  }
-  .input-field {
-    @apply w-full bg-ink border border-line rounded-panel px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-signal/60 focus:outline-none;
-  }
   .label-eyebrow {
     @apply font-mono text-[11px] uppercase tracking-widest text-text-muted;
+    position: relative;
+    padding-left: 14px;
   }
-
-  /* Live status dot — used anywhere something should read as "actively running" */
-  .live-dot {
-    @apply relative inline-flex h-1.5 w-1.5;
-  }
-  .live-dot::before {
-    content: "";
-    @apply absolute inline-flex h-full w-full rounded-full bg-signal animate-blink;
-  }
-  .live-dot::after {
-    content: "";
-    @apply relative inline-flex rounded-full h-1.5 w-1.5 bg-signal;
-  }
-  .live-dot.is-data::before,
-  .live-dot.is-data::after {
-    @apply bg-data;
-  }
-
-  /* Scanning sweep overlay — a thin light band that passes over a panel once wired up */
-  .scan-overlay {
-    @apply pointer-events-none absolute inset-0 overflow-hidden rounded-panel;
-  }
-  .scan-overlay::before {
+  .label-eyebrow::before {
     content: "";
     position: absolute;
     left: 0;
-    right: 0;
-    height: 40%;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(224, 141, 60, 0.06),
-      transparent
-    );
-  }
-  .scan-overlay.is-active::before {
-    @apply animate-scan;
+    top: 50%;
+    width: 8px;
+    height: 1px;
+    background: theme(colors.signal / 80%);
+    transform: translateY(-50%);
   }
 
-  /* Tool chip — landing page pills, dashboard nav badges */
-  .tool-chip {
-    @apply inline-flex items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-xs text-text-muted transition;
+  .btn-primary {
+    @apply bg-signal text-text-primary font-mono font-medium uppercase tracking-wide text-xs rounded-panel px-4 py-2.5 transition-all duration-150;
   }
-  .tool-chip.is-active {
-    @apply text-text-primary border-current;
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -6px rgba(255, 45, 108, 0.5);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { @apply opacity-40 cursor-not-allowed; transform: none; box-shadow: none; }
+
+  .btn-secondary {
+    @apply bg-panel-raised border border-line text-text-primary font-mono font-medium uppercase tracking-wide text-xs rounded-panel px-4 py-2.5 transition-all duration-150;
+  }
+  .btn-secondary:hover {
+    @apply border-data/60;
+    transform: translateY(-2px);
+  }
+  .btn-secondary:disabled { @apply opacity-40 cursor-not-allowed; transform: none; }
+
+  .input-field {
+    @apply w-full bg-ink border border-line rounded-panel px-3 py-2 text-sm text-text-primary placeholder:text-text-muted transition-colors duration-150;
+  }
+  .input-field:focus {
+    @apply border-signal/60 outline-none;
   }
 
-  /* Staggered fade-up entrance — apply with an inline animation-delay per child */
-  .stagger-in {
-    @apply opacity-0 animate-fade-up;
+  .console-panel {
+    @apply relative bg-panel border border-line rounded-panel;
   }
+  .console-panel::before,
+  .console-panel::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: theme(colors.signal.DEFAULT / 55%);
+    pointer-events: none;
+  }
+  .console-panel::before { top: -1px; left: -1px; border-top: 1.5px solid; border-left: 1.5px solid; }
+  .console-panel::after { bottom: -1px; right: -1px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
 
-  /* Panel with a lit top edge — use on any panel that's currently the focal surface */
-  .panel-accent {
-    @apply panel relative;
-    border-top: 2px solid #e08d3c;
-    box-shadow: 0 -1px 24px -8px rgba(224, 141, 60, 0.25);
+  .status-live {
+    @apply relative inline-flex h-1.5 w-1.5 rounded-full bg-signal;
   }
-  .panel-accent.is-data {
-    border-top-color: #6fa8b5;
-    box-shadow: 0 -1px 24px -8px rgba(79, 209, 197, 0.25);
+  .status-live::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 9999px;
+    background: theme(colors.signal / 40%);
+    animation: pulse-ring 2s ease-out infinite;
   }
+  @keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+  /* --- Add these INSIDE your existing @layer components block --- */
 
-  /* Empty state — replaces a lone muted sentence with something that has weight */
-  .empty-state {
-    @apply flex flex-col items-center justify-center text-center py-16 px-6;
-  }
-  .empty-state-icon {
-    @apply w-11 h-11 rounded-full flex items-center justify-center mb-4;
-    background: rgba(224, 141, 60, 0.1);
-    color: #e08d3c;
-  }
-  .empty-state-icon.is-data {
-    background: rgba(79, 209, 197, 0.1);
-    color: #6fa8b5;
-  }
+.panel-accent {
+  @apply relative bg-panel border border-line rounded-panel;
+}
 
-  /* Icon badge — larger colored circle used in page headers and tool cards */
-  .icon-badge {
-    @apply w-11 h-11 rounded-panel flex items-center justify-center shrink-0;
-    background: rgba(224, 141, 60, 0.12);
-    color: #e08d3c;
-  }
-  .icon-badge.is-data {
-    background: rgba(79, 209, 197, 0.12);
-    color: #6fa8b5;
-  }
+.empty-state {
+  @apply flex h-full flex-col items-center justify-center py-12 text-center;
+}
+.empty-state-icon {
+  @apply mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-line bg-panel-raised text-text-muted;
+}
 
-  /* Page header — bold header block used at the top of every dashboard page */
-  .page-header {
-    @apply flex items-center gap-4 mb-8 relative;
+.tool-chip {
+  @apply rounded-panel border border-line px-3 py-1.5 font-mono text-xs text-text-muted transition-colors duration-150;
+}
+
+.stagger-in {
+  animation: fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+  /* boot sequence + typewriter cursor */
+  .blink-cursor { animation: blink 0.8s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* tilt card used by ModuleRail */
+  .tilt-card {
+    @apply relative overflow-hidden border border-line bg-panel p-6 transition-colors duration-200;
+    transform-style: preserve-3d;
+    will-change: transform;
   }
-  .page-header-glow {
-    @apply pointer-events-none absolute -z-10;
-    width: 260px;
-    height: 140px;
-    top: -40px;
-    left: -20px;
-    background: radial-gradient(ellipse at center, rgba(224, 141, 60, 0.14), transparent 70%);
+  .tilt-card:hover { @apply border-signal/50; }
+  .tilt-card .spotlight {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: radial-gradient(300px circle at var(--x, 50%) var(--y, 50%), rgba(255, 45, 108, 0.12), transparent 70%);
+    pointer-events: none;
   }
-  .page-header-glow.is-data {
-    background: radial-gradient(ellipse at center, rgba(79, 209, 197, 0.14), transparent 70%);
+  .tilt-card:hover .spotlight { opacity: 1; }
+
+  /* marquee ticker */
+  .marquee-track {
+    animation: marquee 22s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .marquee-item {
+    @apply font-mono text-[13px] uppercase tracking-widest text-text-muted;
+    padding: 0 2rem;
+    white-space: nowrap;
+  }
+  .marquee-item .dot { @apply text-signal; margin-right: 2rem; }
+}
+.panel {
+  @apply relative bg-panel border border-line rounded-panel;
+}
+ 
+
+
+@layer utilities {
+  .reveal, .reveal-left, .reveal-right {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal { transform: translateY(20px); }
+  .reveal-left { transform: translateX(-24px); }
+  .reveal-right { transform: translateX(24px); }
+  .reveal.is-visible, .reveal-left.is-visible, .reveal-right.is-visible {
+    opacity: 1;
+    transform: translate(0, 0);
   }
 }

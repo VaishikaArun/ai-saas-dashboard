@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
-// TypeScript may complain about side-effect CSS imports when no declaration is present.
-// Ignore the next line to allow importing global CSS in the Next.js app router layout.
-// @ts-ignore
+import { IBM_Plex_Mono, Inter } from "next/font/google";
 import "./globals.css";
 
-const display = Space_Grotesk({
+const display = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-display",
@@ -19,7 +16,7 @@ const body = Inter({
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-mono",
@@ -27,9 +24,8 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PULSE — Autonomous agents, observed at signal level",
-  description:
-    "Deploy, monitor, and audit AI agents with live signal-level visibility into every decision they make.",
+  title: "Patchbay — One workspace, four tools",
+  description: "Chat, generate images, build resumes, and review code in one place.",
 };
 
 export default function RootLayout({
@@ -38,10 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${body.variable} ${mono.variable}`}
-    >
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );
